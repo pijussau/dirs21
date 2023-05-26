@@ -1,25 +1,75 @@
+// import { faker } from "@faker-js/faker"
+// const { db } = require("./db");
+import { db } from './db.js';
+
+// Generate 100 random dishes
+
+for (let i = 0; i < 100; i++) {
+  const name = faker.vehicle.bicycle()
+  const myuuid = "123"
+  const description = faker.vehicle.model()
+  const price = 12.50
+  const category = faker.vehicle.color()
+  const available = "Breakfast"
+  const delivery = "Tomorrow"
+
+  db.query(
+    'INSERT INTO `dishes` (`uuid`, `name`, `description`, `price`, `category`, `available`, `active`, `delivery`) VALUES (?,?,?,?,?,?,?,?)',
+    [myuuid, name, description, price, category, available, 1, delivery],
+    function(err, results, fields) {
+      console.log(results); // results contains rows returned by server
+      console.log(fields); // fields contains extra meta data about results, if available
+  
+      // If you execute same statement again, it will be picked from a LRU cache
+      // which will save query preparation time and give better performance
+    })
+
+}
+
+db.end();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const express = require("express");
+
 const bodyParser = require("body-parser");
 const router = express.Router();
 const cors = require("cors")
 const app = express();
 const port = 9000;
 const { uuid } = require("uuidv4");
-
 // setup middleware
 app.use(bodyParser.json());
 app.use(cors());
 
+
+
 //
 var _dishes = [];
 
-// get dishes
-router.get('/dishes', (req, res) => {
-    res.json({
-        status: "OK",
-        data: _dishes
-    });
-});
 
 // clear dishes
 router.get('/dishes/clear', (req, res) => {
